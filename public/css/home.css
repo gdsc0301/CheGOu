@@ -1,0 +1,7 @@
+body {
+    display: flex;
+}
+
+body > div.vertical.menu{
+    height: 100vh;
+}

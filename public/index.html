@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+    <title>CheGOu</title>
+    <meta charset="UTF-8">
+    <script src="js/jquery.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/semantic.min.css">
+</head>
+<body>
+    <div class="ui equal width centered stackable grid">
+        <div class="column">
+            <h1>Che<span class="bold">GO</span>u</h1>
+            <p>Chat corporativo open-source, a solução da comunicação.</p>
+        </div>
+        <div class="column">
+            <div class="ui raised padded left aligned segment login">
+                <h1>Quem é você?</h1>
+                <p>Precisamos de alguns dados seus antes de continuarmos.</p>
+                <form id="login" action="/chat" class="ui left aligned form" method="POST">
+                    <div class="field">
+                        <label>Nome</label>
+                        <input type="text" name="name" placeholder="Seu nome" required>
+                    </div>
+                    <div class="field">
+                        <label>E-mail</label>
+                        <input type="text" name="email" placeholder="Seu e-mail" required>
+                    </div>
+                    <input type="submit" value="GO!" class="ui fluid teal button">
+                </form>
+            </div>
+        </div>
+        
+    </div>
+    <script src="js/semantic.min.js"></script>
+</body>
+</html>
