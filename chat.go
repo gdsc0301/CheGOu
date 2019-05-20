@@ -15,6 +15,14 @@ type User struct {
 	Email string
 }
 
+type Welcome struct {
+	Name    string
+	Email   string
+	UsersOn []User
+}
+
+var users []User
+
 var client = pusher.Client{
 	AppId:   "765573",
 	Key:     "801df7fc97e6c3f08e25",
@@ -22,13 +30,27 @@ var client = pusher.Client{
 	Cluster: "us2",
 }
 
+var clients = make([]User, 1)
+
 func signIn(response http.ResponseWriter, request *http.Request) {
-	var newUser = User{request.FormValue("name"), request.FormValue("email")}
-	println(newUser.Name + " just logged in.")
+	var bWelcome = Welcome{
+		Name:    request.FormValue("name"),
+		Email:   request.FormValue("email"),
+		UsersOn: clients}
 
-	tmpl := template.Must(template.ParseFiles("templates/home.html"))
+	user := User{
+		Name:  bWelcome.Name,
+		Email: bWelcome.Email}
 
-	tmpl.Execute(response, newUser)
+	clients = append(clients, user)
+
+	println(bWelcome.Name + " just logged in.")
+
+	client.Trigger("serverEvents", "userIn", user)
+
+	tmpl := template.Must(template.ParseFiles("templates/chat.html"))
+
+	tmpl.Execute(response, bWelcome)
 }
 
 func pusherAuth(res http.ResponseWriter, req *http.Request) {

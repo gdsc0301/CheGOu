@@ -1,0 +1,21 @@
+body#chat {
+    display: flex;
+    overflow: hidden;
+    > div.vertical.menu {
+        height: 100vh;
+        border-radius: 0;
+    }
+}
+
+#box-container {
+    width: 100%;
+    overflow: auto;
+
+    > div.column > .room {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+
+        height: 27vh;
+    }
+}

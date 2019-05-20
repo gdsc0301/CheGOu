@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+    <title>CheGOu</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <script src="js/jquery.js"></script>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/chat.css">
+    <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+</head>
+<body id="chat">
+    <div class="ui vertical menu">
+        <div class="ui header item">
+            <span class="bold">CheGOu</span>
+        </div>
+        <div class="item">{{.Name}} &nbsp; <i class="ellipsis horizontal icon"></i></div>
+        <div class="item">
+            <div class="head">Channels</div>
+            <div class="menu channels">
+                <a id="public" href="" class="item">Público</a>
+            </div>
+            {{range .UsersOn}}
+                <div class="menu channels">
+                    <a id="{{.Email}}" href="" class="item">{{.Name}}</a>
+                </div>
+            {{end}}
+        </div>
+    </div>
+    <div id="box-container" class="ui padded equal width fluid grid">
+        <div class="column">
+            <div id="private-main-channel" class="ui fluid segment room">
+                <div class="ui icon input">
+                    <input id="message" type="text" placeholder="Sua mensagem...">
+                    <i id="send" room="private-main-channel" class="circular angle right link icon"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" id="name" value="{{.Name}}">
+    <input type="hidden" id="email" value="{{.Email}}">
+
+    <script src="js/pusher.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="semantic/dist/semantic.min.js"></script>
+</body>
+</html>
