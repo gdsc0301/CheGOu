@@ -1,21 +1,44 @@
 body#chat {
   display: flex;
   overflow: hidden;
+  color: #FFF;
 }
 body#chat > div.vertical.menu {
+  background: #51768C;
   height: 100vh;
   border-radius: 0;
+}
+body#chat > div.vertical.menu div.header span {
+  color: #EE7560;
 }
 
 #box-container {
   width: 100%;
   overflow: auto;
+  background: #435964;
 }
 #box-container > div.column > .room {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  height: 27vh;
+  min-height: 27vh;
+}
+#box-container > div.column > .room > div.chat-feed {
+  display: block;
+}
+#box-container > div.column > .room > div.chat-feed > div.message {
+  width: 100%;
+  padding: 6px;
+  margin: 2px 0;
+  color: #000;
+}
+#box-container > div.column > .room > div.chat-feed > div.message.myMessage {
+  float: left;
+  background-color: #51768C;
+}
+#box-container > div.column > .room > div.chat-feed > div.message.outMessage {
+  float: right;
+  text-align: right;
 }
 
 /*# sourceMappingURL=chat.css.map */

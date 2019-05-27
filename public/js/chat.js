@@ -2,11 +2,23 @@ var pusher;
 var room, system;
 
 var me;
-var rooms = {}, users = {};
+var rooms = {}, clients = {};
 
 var debug = true;
 
 $(document).ready(function(e){
+    $("i#profile-menu-link").popup({
+        popup: "#profile-menu",
+        on: "click",
+        inline     : false,
+        hoverable  : true,
+        position   : 'right center',
+        delay: {
+            show: 300,
+            hide: 800
+        }
+    });
+
     me = {
         name: $("input#name").val(),
         email: $("input#email").val()
@@ -30,10 +42,10 @@ $(document).ready(function(e){
     }
     
     function userIn(data){
-        msg("USER IN - " + Date.now());
+        msg("USER IN");
         msg(data);
 
-        users[data.Email] = data;
+        clients[data.Email] = data;
 
         $("body > div.vertical.menu div.channels").append(
             "<a class='item' href='' id='" + data.Email + "'>" + data.Name + "</a>"
@@ -43,23 +55,27 @@ $(document).ready(function(e){
     function userOut(data){
         msg("USER OUT");
         msg(data);
+
+        document.getElementById(data.Email).remove();
+        delete clients[data.Email];
     }
     
     function receiveMessage(data){
         msg("MESSAGE RECEIVED");
         msg(data);
 
-        $("div#" + data.room).prepend("<div class='outMessage'>" + data.message + "</div>");
+        $("div#" + data.room + " > div.chat-feed").append("<div class='message outMessage'>" + data.message + "</div>");
     }
     
     function sendMessage(data){
-        $("div#" + data.room).append("<div class='myMessage'>" + data.message + "</div>");
+        $("div#" + data.room + " > div.chat-feed").append("<div class='message myMessage'>" + data.message + "</div>");
         $("div#" + data.room + " input[type='text']").val("");
 
         rooms[data.room].trigger('client-newMessage', {
             name: me.name, 
             email: me.email, 
-            message : data.message
+            message : data.message,
+            room : data.room
         });
     }
 
@@ -75,25 +91,25 @@ $(document).ready(function(e){
         });
     });
 
-    window.onclose(function(e){
-        
-    })
-
-    function msg(message) {
-        if(debug) console.log(message);
-    }
-
-    /*$("form#login").on("submit", function(e){
+    $("a#logout").on("click", function(e){
         e.preventDefault();
         console.log($(this).serialize());
         
         $.ajax({
-            url:"/chat",
+            url:"/logout",
             method: "POST",
-            data: $(this).serialize(),
+            data: me,
             success: function(data){
-                console.log(data);
+                window.location = "/";
             }
         });
-    });*/
-})
+    });
+});
+
+function getId(name) {
+    return name + Date.Now();
+}
+
+function msg(message) {
+    if(debug) console.log(message);
+}

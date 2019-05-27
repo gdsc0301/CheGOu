@@ -10,11 +10,13 @@ import (
 	"github.com/pusher/pusher-http-go"
 )
 
+// User - The data sended for everyone who's connected when a new user SignIn.
 type User struct {
 	Name  string
 	Email string
 }
 
+// Welcome - The data sended for the users when they SignIn.
 type Welcome struct {
 	Name    string
 	Email   string
@@ -30,7 +32,7 @@ var client = pusher.Client{
 	Cluster: "us2",
 }
 
-var clients = make([]User, 1)
+var clients = make([]User, 0)
 
 func signIn(response http.ResponseWriter, request *http.Request) {
 	var bWelcome = Welcome{
@@ -38,19 +40,53 @@ func signIn(response http.ResponseWriter, request *http.Request) {
 		Email:   request.FormValue("email"),
 		UsersOn: clients}
 
+	alreadyLogged := false
+
+	for _, d := range clients {
+		if d.Name == bWelcome.Name {
+			alreadyLogged = true
+		}
+	}
+
 	user := User{
 		Name:  bWelcome.Name,
 		Email: bWelcome.Email}
 
-	clients = append(clients, user)
+	if alreadyLogged == false {
+		clients = append(clients, user)
 
-	println(bWelcome.Name + " just logged in.")
+		println(bWelcome.Name + " just logged in.")
+		client.Trigger("serverEvents", "userIn", user)
+	} else {
+		println(bWelcome.Name + " is already logged.")
+	}
 
-	client.Trigger("serverEvents", "userIn", user)
+	println("Users on: ")
+	printUsersOn()
 
 	tmpl := template.Must(template.ParseFiles("templates/chat.html"))
 
 	tmpl.Execute(response, bWelcome)
+}
+
+func logOut(writter http.ResponseWriter, request *http.Request) {
+	gdBye := User{
+		Name:  request.FormValue("name"),
+		Email: request.FormValue("email"),
+	}
+
+	for i, d := range clients {
+		if d.Name == gdBye.Name {
+			clients = append(clients[:i], clients[i+1:]...)
+
+			println(d.Name + " just Logged out.")
+			println("Users on: ")
+			printUsersOn()
+			break
+		}
+	}
+
+	client.Trigger("serverEvents", "userOut", gdBye)
 }
 
 func pusherAuth(res http.ResponseWriter, req *http.Request) {
@@ -64,14 +100,17 @@ func pusherAuth(res http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(res, string(response))
 }
 
-func buttonEvent(rw http.ResponseWriter, req *http.Request) {
-	client.Trigger("main-channel", "button", "Someone pressed a button")
+func printUsersOn() {
+	for _, e := range clients {
+		println("- " + e.Name)
+	}
 }
 
 func main() {
 	http.Handle("/", http.FileServer(http.Dir("./public")))
 	http.HandleFunc("/pusher/auth", pusherAuth)
 	http.HandleFunc("/chat", signIn)
+	http.HandleFunc("/logout", logOut)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

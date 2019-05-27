@@ -11,26 +11,32 @@
     <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
 </head>
 <body id="chat">
-    <div class="ui vertical menu">
+    <div class="ui vertical inverted menu">
         <div class="ui header item">
             <span class="bold">CheGOu</span>
         </div>
-        <div class="item">{{.Name}} &nbsp; <i class="ellipsis horizontal icon"></i></div>
+        <div class="item profile">
+            {{.Name}} &nbsp; <i id="profile-menu-link" class="ellipsis horizontal link icon"></i>
+            <div class="ui custom popup right center transition hidden">
+                <div id="profile-menu" class="ui link list">
+                    <a href="" id="logout" class="item">Sair</a>
+                </div>
+            </div>
+        </div>
         <div class="item">
             <div class="head">Channels</div>
             <div class="menu channels">
                 <a id="public" href="" class="item">Público</a>
-            </div>
-            {{range .UsersOn}}
-                <div class="menu channels">
+                {{range .UsersOn}}
                     <a id="{{.Email}}" href="" class="item">{{.Name}}</a>
-                </div>
-            {{end}}
+                {{end}}
+            </div>
         </div>
     </div>
     <div id="box-container" class="ui padded equal width fluid grid">
         <div class="column">
             <div id="private-main-channel" class="ui fluid segment room">
+                <div class="chat-feed"></div>
                 <div class="ui icon input">
                     <input id="message" type="text" placeholder="Sua mensagem...">
                     <i id="send" room="private-main-channel" class="circular angle right link icon"></i>

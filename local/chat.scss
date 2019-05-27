@@ -1,21 +1,55 @@
+$white: #FFF;
+$orange: #EE7560;
+$darkBlue: #435964;
+$blue: #51768C;
+
 body#chat {
     display: flex;
     overflow: hidden;
+    color: $white;
+
     > div.vertical.menu {
+        background: $blue;
         height: 100vh;
         border-radius: 0;
+
+        div.header span {
+            color: $orange;
+        }
     }
 }
 
 #box-container {
     width: 100%;
     overflow: auto;
+    background: $darkBlue;
 
     > div.column > .room {
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
 
-        height: 27vh;
+        min-height: 27vh;
+
+        > div.chat-feed {
+            display: block;
+            > div.message {
+                width: 100%;
+                padding: 6px;
+                margin: 2px 0;
+
+                color: #000;
+
+                &.myMessage {
+                    float: left;
+                    background-color: $blue;
+                }
+
+                &.outMessage {
+                    float: right;
+                    text-align: right;
+                }
+            }
+        }
     }
 }
