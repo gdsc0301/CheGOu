@@ -5,7 +5,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"strings"
 	"text/template"
 
 	"github.com/pusher/pusher-http-go"
@@ -39,19 +38,6 @@ func signIn(response http.ResponseWriter, request *http.Request) {
 		Email:   request.FormValue("email"),
 		UsersOn: nil}
 
-	for i, d := range clients {
-		if d.Name == request.FormValue("name") {
-			bWelcome.UsersOn = append(clients[:i], clients[i+1:]...)
-			break
-		}
-	}
-
-	if strings.Compare(bWelcome.Name, "") == 0 || strings.Compare(bWelcome.Email, "") == 0 {
-		tmpl := template.Must(template.ParseFiles("templates/chat.html"))
-
-		tmpl.Execute(response, bWelcome)
-	}
-
 	alreadyLogged := false
 
 	for _, d := range clients {
@@ -71,6 +57,13 @@ func signIn(response http.ResponseWriter, request *http.Request) {
 		client.Trigger("serverEvents", "userIn", user)
 	} else {
 		println(bWelcome.Name + " is already logged.")
+	}
+
+	for i, d := range clients {
+		if d.Name == request.FormValue("name") {
+			bWelcome.UsersOn = append(clients[:i], clients[i+1:]...)
+			break
+		}
 	}
 
 	println("Users on: ")
