@@ -35,6 +35,7 @@ var clients = make([]User, 0)
 func signIn(response http.ResponseWriter, request *http.Request) {
 	for i, d := range clients {
 		if d.Name == request.FormValue("name") {
+			println(d.Name + " removed.")
 			clients = append(clients[:i], clients[i+1:]...)
 			break
 		}
