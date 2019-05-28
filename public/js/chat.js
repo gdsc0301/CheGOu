@@ -88,10 +88,10 @@ $(document).ready(function(e){
     }
     
     function sendMessage(data){
-        let chatBox = $(document.getElementById(data.room)).find("div.chat-feed");
+        let chatBox = $(document.getElementById(data.room));
         
-        $(chatBox).append("<div class='message myMessage'><span class='bold orange'>Você </span>" + data.message + "</div>");
-        $(chatBox).find("input[name='message']").val("");
+        $(chatBox).find("div.chat-feed").append("<div class='message myMessage'><span class='bold orange'>Você </span>" + data.message + "</div>");
+        $(chatBox).find("input.message").val("");
 
         rooms[data.room].trigger('client-newMessage', data);
 

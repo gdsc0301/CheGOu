@@ -33,8 +33,17 @@ var client = pusher.Client{
 var clients = make([]User, 0)
 
 func signIn(response http.ResponseWriter, request *http.Request) {
+	alreadyLogged := false
+
 	for i, d := range clients {
 		if d.Name == request.FormValue("name") {
+			gdBye := User{
+				Name:  request.FormValue("name"),
+				Email: request.FormValue("email"),
+			}
+
+			client.Trigger("serverEvents", "userOut", gdBye)
+
 			println(d.Name + " removed.")
 			clients = append(clients[:i], clients[i+1:]...)
 			break
@@ -45,8 +54,6 @@ func signIn(response http.ResponseWriter, request *http.Request) {
 		Name:    request.FormValue("name"),
 		Email:   request.FormValue("email"),
 		UsersOn: clients}
-
-	alreadyLogged := false
 
 	for _, d := range clients {
 		if d.Name == bWelcome.Name {
