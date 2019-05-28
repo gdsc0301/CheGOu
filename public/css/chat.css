@@ -1,7 +1,38 @@
+.bold {
+  font-weight: 800;
+}
+
+.orange {
+  color: #EE7560;
+}
+
+.darkblue {
+  color: #435964;
+}
+
+.blue {
+  color: #51768C;
+}
+
+.bg-orange {
+  background-color: #EE7560;
+}
+
+.bg-darkblue {
+  background-color: #435964;
+}
+
+.bg-blue {
+  background-color: #51768C;
+}
+
+.hidden {
+  display: none !important;
+}
+
 body#chat {
   display: flex;
   overflow: hidden;
-  color: #FFF;
 }
 body#chat > div.vertical.menu {
   background: #51768C;
@@ -17,28 +48,38 @@ body#chat > div.vertical.menu div.header span {
   overflow: auto;
   background: #435964;
 }
+#box-container > div.column {
+  min-width: 308px;
+}
 #box-container > div.column > .room {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   min-height: 27vh;
 }
+#box-container > div.column > .room > form {
+  margin-top: 6px;
+}
 #box-container > div.column > .room > div.chat-feed {
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 #box-container > div.column > .room > div.chat-feed > div.message {
-  width: 100%;
-  padding: 6px;
+  max-width: 50%;
+  min-width: 25%;
+  padding: 8px;
   margin: 2px 0;
+  border-radius: 6px;
   color: #000;
 }
 #box-container > div.column > .room > div.chat-feed > div.message.myMessage {
-  float: left;
+  align-self: flex-end;
+  text-align: right;
   background-color: #51768C;
 }
 #box-container > div.column > .room > div.chat-feed > div.message.outMessage {
-  float: right;
-  text-align: right;
+  align-self: flex-start;
+  text-align: left;
 }
 
 /*# sourceMappingURL=chat.css.map */

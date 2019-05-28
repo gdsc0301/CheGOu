@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 	"text/template"
 
 	"github.com/pusher/pusher-http-go"
@@ -23,8 +24,6 @@ type Welcome struct {
 	UsersOn []User
 }
 
-var users []User
-
 var client = pusher.Client{
 	AppId:   "765573",
 	Key:     "801df7fc97e6c3f08e25",
@@ -38,7 +37,20 @@ func signIn(response http.ResponseWriter, request *http.Request) {
 	var bWelcome = Welcome{
 		Name:    request.FormValue("name"),
 		Email:   request.FormValue("email"),
-		UsersOn: clients}
+		UsersOn: nil}
+
+	for i, d := range clients {
+		if d.Name == request.FormValue("name") {
+			bWelcome.UsersOn = append(clients[:i], clients[i+1:]...)
+			break
+		}
+	}
+
+	if strings.Compare(bWelcome.Name, "") == 0 || strings.Compare(bWelcome.Email, "") == 0 {
+		tmpl := template.Must(template.ParseFiles("templates/chat.html"))
+
+		tmpl.Execute(response, bWelcome)
+	}
 
 	alreadyLogged := false
 
@@ -111,6 +123,8 @@ func main() {
 	http.HandleFunc("/pusher/auth", pusherAuth)
 	http.HandleFunc("/chat", signIn)
 	http.HandleFunc("/logout", logOut)
+
+	println("Executing on port 8080.")
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

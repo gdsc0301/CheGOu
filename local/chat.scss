@@ -3,10 +3,23 @@ $orange: #EE7560;
 $darkBlue: #435964;
 $blue: #51768C;
 
+.bold {
+    font-weight: 800;
+}
+
+.orange { color: $orange; }
+.darkblue { color: $darkBlue; }
+.blue { color: $blue; }
+
+.bg-orange { background-color: $orange; }
+.bg-darkblue { background-color: $darkBlue; }
+.bg-blue { background-color: $blue; }
+
+.hidden { display: none !important; }
+
 body#chat {
     display: flex;
     overflow: hidden;
-    color: $white;
 
     > div.vertical.menu {
         background: $blue;
@@ -24,32 +37,47 @@ body#chat {
     overflow: auto;
     background: $darkBlue;
 
-    > div.column > .room {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-
-        min-height: 27vh;
-
-        > div.chat-feed {
-            display: block;
-            > div.message {
-                width: 100%;
-                padding: 6px;
-                margin: 2px 0;
-
-                color: #000;
-
-                &.myMessage {
-                    float: left;
-                    background-color: $blue;
-                }
-
-                &.outMessage {
-                    float: right;
-                    text-align: right;
+    > div.column{
+        min-width: 308px;
+        
+        > .room {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+    
+            min-height: 27vh;
+    
+            > form {
+                margin-top: 6px;
+            }
+    
+            > div.chat-feed {
+                display: flex;
+                flex-direction: column;
+    
+                > div.message {
+                    max-width: 50%;
+                    min-width: 25%;
+    
+                    padding: 8px;
+                    margin: 2px 0;
+    
+                    border-radius: 6px;
+    
+                    color: #000;
+    
+                    &.myMessage {
+                        align-self: flex-end;
+                        text-align: right;
+                        background-color: $blue;
+                    }
+    
+                    &.outMessage {
+                        align-self: flex-start;
+                        text-align: left;
+                    }
                 }
             }
-        }
+        }   
     }
 }
