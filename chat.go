@@ -44,7 +44,7 @@ func signIn(response http.ResponseWriter, request *http.Request) {
 	var bWelcome = Welcome{
 		Name:    request.FormValue("name"),
 		Email:   request.FormValue("email"),
-		UsersOn: nil}
+		UsersOn: clients}
 
 	alreadyLogged := false
 
