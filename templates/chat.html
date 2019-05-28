@@ -52,6 +52,26 @@
             </div>
         </div>
 
+        <div id="{{.Email}}" class="column hidden">
+                <div class="ui fluid bg-darkblue top attached segment">
+                    <h3 class="header">{{.Name}}</h3>
+                </div>
+                <div class="ui fluid attached segment room">
+                    <div class="chat-feed"></div>
+                    <form class="ui horizontal fluid form message">
+                        <div class="ui action fluid input">
+                            <input name="message" type="text" placeholder="Sua mensagem...">
+                            <button class="ui icon button send" room="{{.Email}}">
+                                <i class="angle right link icon"></i>
+                            </button>
+                        </div>
+                        <input type="hidden" name="email" value="{{.Email}}">
+                        <input type="hidden" name="name" value="{{.Name}}">
+                        <input type="submit" hidden>
+                    </form>
+                </div>
+            </div>
+
         {{range .UsersOn}}
             <div id="{{.Email}}" class="column hidden">
                 <div class="ui fluid bg-darkblue top attached segment">

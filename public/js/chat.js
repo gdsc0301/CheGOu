@@ -75,9 +75,13 @@ $(document).ready(function(e){
         let chatBox = $(document.getElementById(data.room)).find("div.chat-feed");
 
         if(rooms[data.room].length > 0) {
+            msg("CHAT ALREADY EXISTS");
+            msg(data);
             $(chatBox).removeClass('hidden');
             $(chatBox).append("<div class='message outMessage'><span class='bold orange'>" + data.name + "&nbsp;</span>" + data.message + "</div>");
         }else {
+            msg("NEW CHAT");
+            msg(data);
             newChat(data.room, data.name);
             $(chatBox).append("<div class='message outMessage'><span class='bold orange'>" + data.name + "&nbsp;</span>" + data.message + "</div>");
         }

@@ -33,6 +33,13 @@ var client = pusher.Client{
 var clients = make([]User, 0)
 
 func signIn(response http.ResponseWriter, request *http.Request) {
+	for i, d := range clients {
+		if d.Name == request.FormValue("name") {
+			clients = append(clients[:i], clients[i+1:]...)
+			break
+		}
+	}
+
 	var bWelcome = Welcome{
 		Name:    request.FormValue("name"),
 		Email:   request.FormValue("email"),
@@ -57,13 +64,6 @@ func signIn(response http.ResponseWriter, request *http.Request) {
 		client.Trigger("serverEvents", "userIn", user)
 	} else {
 		println(bWelcome.Name + " is already logged.")
-	}
-
-	for i, d := range clients {
-		if d.Name == request.FormValue("name") {
-			bWelcome.UsersOn = append(clients[:i], clients[i+1:]...)
-			break
-		}
 	}
 
 	println("Users on: ")
